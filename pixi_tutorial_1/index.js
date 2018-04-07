@@ -24,3 +24,25 @@ app.renderer.view.style.position = 'absolute';
 app.renderer.view.style.display = 'block';
 app.renderer.autoResize = true;
 app.renderer.resize(window.innerWidth / 2, window.innerHeight / 2);
+
+//loading images into the texture cache
+
+//PIXI.utils.TextureCache["img/redfish.png"];
+
+PIXI.loader
+  .add(['img/redfish.png', 'img/yellowfish.png', 'img/bluefish.png'])
+  .load(setup);
+
+function setup() {
+  let redfish = new PIXI.Sprite(
+    PIXI.loader.resources['img/redfish.png'].texture
+  );
+  let yellowfish = new PIXI.Sprite(
+    PIXI.loader.resources['img/yellowfish.png'].texture
+  );
+  let bluefish = new PIXI.Sprite(
+    PIXI.loader.resources['img/bluefish.png'].texture
+  );
+
+  app.stage.addChild(redfish, yellowfish, bluefish);
+}
