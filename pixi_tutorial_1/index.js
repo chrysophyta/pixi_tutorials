@@ -25,13 +25,32 @@ app.renderer.view.style.display = 'block';
 app.renderer.autoResize = true;
 app.renderer.resize(window.innerWidth / 2, window.innerHeight / 2);
 
-//loading images into the texture cache
+//- Loading images into the texture cache
+//    A WebGL-ready image is called a texture
+//    Pixi uses a texture cache to store and reference all the textures your sprites will need
+//    That means if you have a texture that was loaded from "images/cat.png", 
+//    you could find it in the texture cache like this: PIXI.utils.TextureCache["img/redfish.png"];
+//    and later use Pixi’s Sprite class to make a new sprite using the texture
 
-//PIXI.utils.TextureCache["img/redfish.png"];
-
+//    Converting img files into texture: use loader like follows
+//    after loading run function called setup
 PIXI.loader
   .add(['img/redfish.png', 'img/yellowfish.png', 'img/bluefish.png'])
+  // use on("progress",function) to monitor loading progress
+  .on("progress", loadProgressHandler);
   .load(setup);
+
+  function loadProgressHandler() {
+     //Display the file `url` currently being loaded
+    console.log("loading: " + resource.url); 
+
+  //Display the percentage of files currently loaded
+  console.log("progress: " + loader.progress + "%"); 
+
+  //If you gave your files names as the first argument 
+  //of the `add` method, you can access them like this
+  //console.log("loading: " + resource.name);
+  }
 
 function setup() {
   let redfish = new PIXI.Sprite(
@@ -44,5 +63,7 @@ function setup() {
     PIXI.loader.resources['img/bluefish.png'].texture
   );
 
+  // add the sprites to the stage
   app.stage.addChild(redfish, yellowfish, bluefish);
 }
+
