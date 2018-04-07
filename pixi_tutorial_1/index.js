@@ -98,4 +98,12 @@ function setup() {
 
   // add the sprites to the stage
   app.stage.addChild(redfish, yellowfish, bluefish);
+
+  //Start the game loop by adding the `gameLoop` function to
+  //Pixi's `ticker` and providing it with a `delta` argument.
+  function gameLoop(delta) {
+    //Move the cat 1 pixel
+    redfish.x += 1;
+  }
+  app.ticker.add(delta => gameLoop(delta));
 }
