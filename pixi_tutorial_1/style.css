@@ -1,9 +1,19 @@
-body {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+body {
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
 .reference {
+  position: absolute;
+  bottom: 0;
   text-align: center;
+  margin: 10px;
 }
