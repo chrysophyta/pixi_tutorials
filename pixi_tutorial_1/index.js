@@ -63,13 +63,6 @@ function setup() {
     PIXI.loader.resources['img/bluefish.png'].texture
   );
 
-  //Change the sprite's position
-  redfish.x = 96;
-  redfish.y = 96;
-
-  bluefish.position.set(0, 30);
-  yellowfish.position.set(50, 50);
-
   //Setting size
   redfish.width = 25;
   redfish.height = 25;
@@ -79,6 +72,29 @@ function setup() {
 
   yellowfish.width = 25;
   yellowfish.height = 25;
+
+  //Change the sprite's position
+  //Center the redfish
+  // screen height
+
+  let height = app.renderer.screen.height;
+  let width = app.renderer.screen.width;
+
+  redfish.x = width / 2 - redfish.width / 2;
+  redfish.y = height / 2 - redfish.height / 2;
+
+  //given a random y position
+  //The `randomInt` helper function
+
+  function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  let bluefishX = randomInt(0, width);
+  let yellowfishX = randomInt(0, width);
+
+  bluefish.position.set(bluefishX, 30);
+  yellowfish.position.set(yellowfishX, 50);
 
   // add the sprites to the stage
   app.stage.addChild(redfish, yellowfish, bluefish);
