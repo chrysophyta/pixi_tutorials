@@ -9,6 +9,11 @@ PIXI.utils.sayHello(type);
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+function setSize(stuff, w, h) {
+  stuff.width = w;
+  stuff.height = h;
+}
 // Keyboard Function
 function keyboard(keyCode) {
   let key = {};
@@ -105,14 +110,9 @@ function setup() {
   bluefish = new PIXI.Sprite(PIXI.loader.resources['img/bluefish.png'].texture);
 
   //Setting size
-  redfish.width = 25;
-  redfish.height = 25;
-
-  bluefish.width = 25;
-  bluefish.height = 25;
-
-  yellowfish.width = 25;
-  yellowfish.height = 25;
+  setSize(redfish, 25, 25);
+  setSize(bluefish, 25, 25);
+  setSize(yellowfish, 25, 25);
 
   //Change the sprite's position
   //Center the redfish
