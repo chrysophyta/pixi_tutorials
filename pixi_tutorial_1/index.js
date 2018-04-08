@@ -14,6 +14,7 @@ function setSize(stuff, w, h) {
   stuff.width = w;
   stuff.height = h;
 }
+
 // Keyboard Function
 function keyboard(keyCode) {
   let key = {};
@@ -82,6 +83,8 @@ let state;
 //Get screen height and width
 let height = app.renderer.screen.height;
 let width = app.renderer.screen.width;
+
+let isFlipped = false;
 
 //- Loading images into the texture cache
 //    A WebGL-ready image is called a texture
@@ -155,7 +158,8 @@ function setup() {
 
   redfish.x = width / 2 - redfish.width / 2;
   redfish.y = height / 2 - redfish.height / 2;
-
+  redfish.anchor.y = 0.5;
+  redfish.anchor.x = 0.5;
   redfish.vx = 0;
   redfish.vy = 0;
 
@@ -193,6 +197,10 @@ function setup() {
   //Left arrow key `press` method
   left.press = () => {
     //Change the redfish's velocity when the key is pressed
+    isFlipped = true;
+    if (isFlipped) {
+      redfish.scale.x *= -1;
+    }
     redfish.vx = -5;
     redfish.vy = 0;
   };
@@ -220,8 +228,13 @@ function setup() {
 
   //Right
   right.press = () => {
+    if (isFlipped) {
+      redfish.scale.x *= -1;
+    }
+
     redfish.vx = 5;
     redfish.vy = 0;
+    isFlipped = false;
   };
   right.release = () => {
     if (!left.isDown && redfish.vy === 0) {
