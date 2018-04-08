@@ -69,8 +69,16 @@ app.renderer.autoResize = true;
 app.renderer.resize(window.innerWidth / 2, window.innerHeight / 2);
 
 //Define any variables that are used in more than one function
-let redfish, bluefish, yellowfish, state;
+let redfish,
+  bluefish,
+  yellowfish,
+  jellyfish,
+  starfish,
+  coral_1,
+  coral_2,
+  coral_3;
 
+let state;
 //Get screen height and width
 let height = app.renderer.screen.height;
 let width = app.renderer.screen.width;
@@ -85,7 +93,14 @@ let width = app.renderer.screen.width;
 //    Converting img files into texture: use loader like follows
 //    after loading run function called setup
 PIXI.loader
-  .add(['img/redfish.png', 'img/yellowfish.png', 'img/bluefish.png'])
+  .add([
+    'img/redfish.png',
+    'img/yellowfish.png',
+    'img/bluefish.png',
+    'img/coral.png',
+    'img/starfish.png',
+    'img/jellyfish.png'
+  ])
   // use on("progress",function) to monitor loading progress
   .on('progress', loadProgressHandler)
   .load(setup);
@@ -108,12 +123,32 @@ function setup() {
     PIXI.loader.resources['img/yellowfish.png'].texture
   );
   bluefish = new PIXI.Sprite(PIXI.loader.resources['img/bluefish.png'].texture);
+  starfish = new PIXI.Sprite(PIXI.loader.resources['img/starfish.png'].texture);
+  jellyfish = new PIXI.Sprite(
+    PIXI.loader.resources['img/jellyfish.png'].texture
+  );
+  coral_1 = new PIXI.Sprite(PIXI.loader.resources['img/coral.png'].texture);
+  coral_2 = new PIXI.Sprite(PIXI.loader.resources['img/coral.png'].texture);
+  coral_3 = new PIXI.Sprite(PIXI.loader.resources['img/coral.png'].texture);
+
+  // Group sprites with containers
+  let decorAnimal = new PIXI.Container();
+  let corals = new PIXI.Container();
+
+  corals.addChild(coral_1, coral_2, coral_3);
+  decorAnimal.addChild(corals, jellyfish, starfish);
 
   //Setting size
+  function setOneSize(arr, size) {
+    arr.map(item => {
+      setSize(item, size, size);
+    });
+  }
   setSize(redfish, 25, 25);
   setSize(bluefish, 25, 25);
   setSize(yellowfish, 25, 25);
 
+  setOneSize([...corals.children, jellyfish, starfish], 25);
   //Change the sprite's position
   //Center the redfish
   // screen height
@@ -135,6 +170,16 @@ function setup() {
   yellowfish.position.set(yellowfishX, 150);
   yellowfish.vx = 0;
   yellowfish.vy = 0;
+
+  //to use global position: parentSprite.toGlobal(childSprite.position)
+
+  corals.position.set(0, height - corals.height);
+  coral_1.position.set(300, 0);
+  coral_2.position.set(50, 0);
+  coral_3.position.set(100, 0);
+
+  jellyfish.position.set(width / 4, width / 4);
+  starfish.position.set(width / 3 * 2, height - starfish.height);
 
   //---------^^^^^^above is basic position setting ^^^^^^---------
   //---------vvvvvv below is keyboard function setting vvvv-------
@@ -196,7 +241,7 @@ function setup() {
   };
 
   // add the sprites to the stage
-  app.stage.addChild(redfish, yellowfish, bluefish);
+  app.stage.addChild(redfish, yellowfish, bluefish, decorAnimal);
 
   //Set the game state
   state = play;
