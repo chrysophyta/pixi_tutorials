@@ -54,13 +54,6 @@ let app = new PIXI.Application({
 });
 console.log(app);
 
-//Define any variables that are used in more than one function
-let redfish, bluefish, yellowfish, state;
-
-//Get screen height and width
-let height = app.renderer.screen.height;
-let width = app.renderer.screen.width;
-
 //Add the canvas that Pixi automatically created for you to the HTML document
 document.body.appendChild(app.view);
 
@@ -70,10 +63,17 @@ app.renderer.view.style.display = 'block';
 app.renderer.autoResize = true;
 app.renderer.resize(window.innerWidth / 2, window.innerHeight / 2);
 
+//Define any variables that are used in more than one function
+let redfish, bluefish, yellowfish, state;
+
+//Get screen height and width
+let height = app.renderer.screen.height;
+let width = app.renderer.screen.width;
+
 //- Loading images into the texture cache
 //    A WebGL-ready image is called a texture
 //    Pixi uses a texture cache to store and reference all the textures your sprites will need
-//    That means if you have a texture that was loaded from "images/cat.png",
+//    That means if you have a texture that was loaded from "images/redfish.png",
 //    you could find it in the texture cache like this: PIXI.utils.TextureCache["img/redfish.png"];
 //    and later use Pixi’s Sprite class to make a new sprite using the texture
 
@@ -127,10 +127,73 @@ function setup() {
   //given a random y position
 
   let bluefishX = randomInt(0, width);
-  let yellowfishX = randomInt(0, width);
-
   bluefish.position.set(bluefishX, 30);
-  yellowfish.position.set(yellowfishX, 50);
+  bluefish.vx = 0;
+  bluefish.vy = 0;
+
+  let yellowfishX = randomInt(0, width);
+  yellowfish.position.set(yellowfishX, 150);
+  yellowfish.vx = 0;
+  yellowfish.vy = 0;
+
+  //---------^^^^^^above is basic position setting ^^^^^^---------
+  //---------vvvvvv below is keyboard function setting vvvv-------
+
+  //Capture the keyboard arrow keys
+  let left = keyboard(37),
+    up = keyboard(38),
+    right = keyboard(39),
+    down = keyboard(40);
+
+  //Left arrow key `press` method
+  left.press = () => {
+    //Change the redfish's velocity when the key is pressed
+    redfish.vx = -5;
+    redfish.vy = 0;
+  };
+
+  //Left arrow key `release` method
+  left.release = () => {
+    //If the left arrow has been released, and the right arrow isn't down,
+    //and the redfish isn't moving vertically:
+    //Stop the redfish
+    if (!right.isDown && redfish.vy === 0) {
+      redfish.vx = 0;
+    }
+  };
+
+  //Up
+  up.press = () => {
+    redfish.vy = -5;
+    redfish.vx = 0;
+  };
+  up.release = () => {
+    if (!down.isDown && redfish.vx === 0) {
+      redfish.vy = 0;
+    }
+  };
+
+  //Right
+  right.press = () => {
+    redfish.vx = 5;
+    redfish.vy = 0;
+  };
+  right.release = () => {
+    if (!left.isDown && redfish.vy === 0) {
+      redfish.vx = 0;
+    }
+  };
+
+  //Down
+  down.press = () => {
+    redfish.vy = 5;
+    redfish.vx = 0;
+  };
+  down.release = () => {
+    if (!up.isDown && redfish.vx === 0) {
+      redfish.vy = 0;
+    }
+  };
 
   // add the sprites to the stage
   app.stage.addChild(redfish, yellowfish, bluefish);
@@ -148,13 +211,28 @@ function gameLoop(delta) {
 }
 
 function play(delta) {
-  //Move the cat 1 pixel to the right each frame
-  redfish.vx = 1;
-  redfish.x += redfish.vx;
+  //Move the redfish 1 pixel to the right each frame
+  // redfish.vx = 1;
+  // redfish.x += redfish.vx;
 
-  let disappearTime = 100;
-  if (redfish.x > width + disappearTime) {
+  // let disappearTime = 100;
+  // if (redfish.x > width + disappearTime) {
+  //   redfish.x = 0;
+  // }
+  // redfish.x += redfish.vx / 10;
+
+  redfish.x += redfish.vx;
+  redfish.y += redfish.vy;
+  console.log(redfish.x);
+  if (redfish.x > width) {
     redfish.x = 0;
+  } else if (redfish.x < 0) {
+    redfish.x = width;
   }
-  redfish.x += redfish.vx / 10;
+
+  if (redfish.y > height) {
+    redfish.y = 0;
+  } else if (redfish.y < 0) {
+    redfish.y = height;
+  }
 }
