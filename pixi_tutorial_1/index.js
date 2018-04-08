@@ -5,6 +5,11 @@ if (!PIXI.utils.isWebGLSupported()) {
 
 PIXI.utils.sayHello(type);
 
+// some helper functions
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 //Create a Pixi Application
 //argument is a single object called the options
 let app = new PIXI.Application({
@@ -15,6 +20,13 @@ let app = new PIXI.Application({
   resolution: 1 // default: 1
 });
 console.log(app);
+
+//Define any variables that are used in more than one function
+let redfish, bluefish, yellowfish, state;
+
+//Get screen height and width
+let height = app.renderer.screen.height;
+let width = app.renderer.screen.width;
 
 //Add the canvas that Pixi automatically created for you to the HTML document
 document.body.appendChild(app.view);
@@ -53,15 +65,11 @@ function loadProgressHandler(loader, resource) {
 }
 
 function setup() {
-  let redfish = new PIXI.Sprite(
-    PIXI.loader.resources['img/redfish.png'].texture
-  );
-  let yellowfish = new PIXI.Sprite(
+  redfish = new PIXI.Sprite(PIXI.loader.resources['img/redfish.png'].texture);
+  yellowfish = new PIXI.Sprite(
     PIXI.loader.resources['img/yellowfish.png'].texture
   );
-  let bluefish = new PIXI.Sprite(
-    PIXI.loader.resources['img/bluefish.png'].texture
-  );
+  bluefish = new PIXI.Sprite(PIXI.loader.resources['img/bluefish.png'].texture);
 
   //Setting size
   redfish.width = 25;
@@ -77,18 +85,13 @@ function setup() {
   //Center the redfish
   // screen height
 
-  let height = app.renderer.screen.height;
-  let width = app.renderer.screen.width;
-
   redfish.x = width / 2 - redfish.width / 2;
   redfish.y = height / 2 - redfish.height / 2;
 
-  //given a random y position
-  //The `randomInt` helper function
+  redfish.vx = 0;
+  redfish.vy = 0;
 
-  function randomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+  //given a random y position
 
   let bluefishX = randomInt(0, width);
   let yellowfishX = randomInt(0, width);
@@ -99,11 +102,26 @@ function setup() {
   // add the sprites to the stage
   app.stage.addChild(redfish, yellowfish, bluefish);
 
-  //Start the game loop by adding the `gameLoop` function to
-  //Pixi's `ticker` and providing it with a `delta` argument.
-  function gameLoop(delta) {
-    //Move the cat 1 pixel
-    redfish.x += 1;
-  }
+  //Set the game state
+  state = play;
+
   app.ticker.add(delta => gameLoop(delta));
+}
+
+//Start the game loop by adding the `gameLoop` function to
+//Pixi's `ticker` and providing it with a `delta` argument.
+function gameLoop(delta) {
+  state(delta);
+}
+
+function play(delta) {
+  //Move the cat 1 pixel to the right each frame
+  redfish.vx = 1;
+  redfish.x += redfish.vx;
+
+  let disappearTime = 100;
+  if (redfish.x > width + disappearTime) {
+    redfish.x = 0;
+  }
+  redfish.x += redfish.vx / 10;
 }
