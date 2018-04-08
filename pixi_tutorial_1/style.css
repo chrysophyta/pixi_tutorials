@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400');
 * {
   margin: 0;
   padding: 0;
@@ -11,9 +12,40 @@ body {
   justify-content: space-around;
   align-items: center;
 }
-.reference {
+.reference,
+.instruction {
   position: absolute;
-  bottom: 0;
   text-align: center;
-  margin: 10px;
+  margin: 0 auto;
+  font-family: 'Quicksand';
+  font-weight: 300;
+  font-size: 0.6rem;
+  line-height: 150%;
+  opacity: 0.8;
+}
+.reference {
+  bottom: 0;
+  margin-bottom: 2rem;
+}
+.instruction {
+  top: 0;
+  margin-top: 4rem;
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+
+.signature {
+  display: block;
+  opacity: 1;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+em {
+  font-weight: 400;
+}
+
+a {
+  text-decoration: none;
+  color: palevioletred;
 }
