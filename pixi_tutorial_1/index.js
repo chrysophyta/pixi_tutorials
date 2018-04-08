@@ -223,7 +223,8 @@ function play(delta) {
 
   redfish.x += redfish.vx;
   redfish.y += redfish.vy;
-  console.log(redfish.x);
+
+  // allow the fish to come back into screen when they move out it visible area
   if (redfish.x > width) {
     redfish.x = 0;
   } else if (redfish.x < 0) {
@@ -234,5 +235,28 @@ function play(delta) {
     redfish.y = 0;
   } else if (redfish.y < 0) {
     redfish.y = height;
+  }
+
+  bluefish.x += 1;
+  bluefish.y += 0.1;
+  restrainMoving(bluefish, width, height);
+
+  yellowfish.x += 1.5;
+  yellowfish.x += 0.3;
+  restrainMoving(yellowfish, width, height);
+}
+
+function restrainMoving(thing, width, height) {
+  //check x axis
+  if (thing.x > width) {
+    thing.x = 0;
+  } else if (thing.x < 0) {
+    thing.x = width;
+  }
+  //check y axis
+  if (thing.y > height) {
+    thing.y = 0;
+  } else if (thing.y < 0) {
+    thing.y = height;
   }
 }
