@@ -197,9 +197,11 @@ function setup() {
   //Left arrow key `press` method
   left.press = () => {
     //Change the redfish's velocity when the key is pressed
-    isFlipped = true;
-    if (isFlipped) {
+
+    if (!isFlipped) {
       redfish.scale.x *= -1;
+      console.log('i flipped');
+      isFlipped = true;
     }
     redfish.vx = -5;
     redfish.vy = 0;
