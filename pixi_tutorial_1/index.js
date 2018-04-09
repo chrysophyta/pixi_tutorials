@@ -49,6 +49,54 @@ function keyboard(keyCode) {
   return key;
 }
 
+//  hitTestRectangle function
+
+function hitTestRectangle(r1, r2) {
+  //Define the variables we'll need to calculate
+  let hit, combinedHalfWidths, combinedHalfHeights, vx, vy;
+
+  //hit will determine whether there's a collision
+  hit = false;
+
+  //Find the center points of each sprite
+  r1.centerX = r1.x + r1.width / 2;
+  r1.centerY = r1.y + r1.height / 2;
+  r2.centerX = r2.x + r2.width / 2;
+  r2.centerY = r2.y + r2.height / 2;
+
+  //Find the half-widths and half-heights of each sprite
+  r1.halfWidth = r1.width / 2;
+  r1.halfHeight = r1.height / 2;
+  r2.halfWidth = r2.width / 2;
+  r2.halfHeight = r2.height / 2;
+
+  //Calculate the distance vector between the sprites
+  vx = r1.centerX - r2.centerX;
+  vy = r1.centerY - r2.centerY;
+
+  //Figure out the combined half-widths and half-heights
+  combinedHalfWidths = r1.halfWidth + r2.halfWidth;
+  combinedHalfHeights = r1.halfHeight + r2.halfHeight;
+
+  //Check for a collision on the x axis
+  if (Math.abs(vx) < combinedHalfWidths) {
+    //A collision might be occuring. Check for a collision on the y axis
+    if (Math.abs(vy) < combinedHalfHeights) {
+      //There's definitely a collision happening
+      hit = true;
+    } else {
+      //There's no collision on the y axis
+      hit = false;
+    }
+  } else {
+    //There's no collision on the x axis
+    hit = false;
+  }
+
+  //`hit` will be either `true` or `false`
+  return hit;
+}
+
 //Create a Pixi Application
 //argument is a single object called the options
 let app = new PIXI.Application({
@@ -202,7 +250,6 @@ function setup() {
 
     if (!isFlipped) {
       redfish.scale.x *= -1;
-      console.log('i flipped');
       isFlipped = true;
     }
     redfish.vx = -5;
@@ -313,6 +360,16 @@ function play(delta) {
       feeders.removeChild(feeder);
     }
   });
+
+  feeders.children.forEach(feeder => {
+    if (hitTestRectangle(redfish, feeder)) {
+      //if there's a collision
+      console.log('AHHHH!');
+      feeders.removeChild(feeder);
+    } else {
+      //if there's no collision
+    }
+  });
 }
 
 function restrainMoving(thing, width, height) {
@@ -334,7 +391,7 @@ function addFeeder() {
   // Create Feeders with PIXI graphics
   let feeder = new PIXI.Graphics();
   feeder.beginFill(0xffffff);
-  feeder.drawCircle(randomInt(0, width), 0, 3);
+  feeder.drawCircle(randomInt(0, width), 0, 20);
   feeders.addChild(feeder);
   console.log(feeders.children.length);
 }
