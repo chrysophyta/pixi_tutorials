@@ -77,7 +77,8 @@ let redfish,
   starfish,
   coral_1,
   coral_2,
-  coral_3;
+  coral_3,
+  feeders;
 
 let state;
 //Get screen height and width
@@ -137,6 +138,7 @@ function setup() {
   // Group sprites with containers
   let decorAnimal = new PIXI.Container();
   let corals = new PIXI.Container();
+  feeders = new PIXI.Container();
 
   corals.addChild(coral_1, coral_2, coral_3);
   decorAnimal.addChild(corals, jellyfish, starfish);
@@ -256,7 +258,7 @@ function setup() {
   };
 
   // add the sprites to the stage
-  app.stage.addChild(redfish, yellowfish, bluefish, decorAnimal);
+  app.stage.addChild(redfish, yellowfish, bluefish, decorAnimal, feeders);
 
   //Set the game state
   state = play;
@@ -304,6 +306,13 @@ function play(delta) {
   yellowfish.x += 1.5;
   yellowfish.x += 0.3;
   restrainMoving(yellowfish, width, height);
+
+  feeders.children.forEach(feeder => {
+    feeder.y += 1;
+    if (feeder.y > height && feeder.y > 0) {
+      feeders.removeChild(feeder);
+    }
+  });
 }
 
 function restrainMoving(thing, width, height) {
@@ -320,3 +329,20 @@ function restrainMoving(thing, width, height) {
     thing.y = height;
   }
 }
+
+function addFeeder() {
+  // Create Feeders with PIXI graphics
+  let feeder = new PIXI.Graphics();
+  feeder.beginFill(0xffffff);
+  feeder.drawCircle(randomInt(0, width), 0, 3);
+  feeders.addChild(feeder);
+  console.log(feeders.children.length);
+}
+
+function feeding() {
+  setInterval(function() {
+    addFeeder();
+  }, 3000);
+}
+
+feeding();
