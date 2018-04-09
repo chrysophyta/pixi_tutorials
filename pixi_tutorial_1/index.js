@@ -134,6 +134,7 @@ let height = app.renderer.screen.height;
 let width = app.renderer.screen.width;
 
 let isFlipped = false;
+let isPaused = false;
 
 //- Loading images into the texture cache
 //    A WebGL-ready image is called a texture
@@ -242,7 +243,8 @@ function setup() {
   let left = keyboard(37),
     up = keyboard(38),
     right = keyboard(39),
-    down = keyboard(40);
+    down = keyboard(40),
+    space = keyboard(32);
 
   //Left arrow key `press` method
   left.press = () => {
@@ -301,6 +303,17 @@ function setup() {
   down.release = () => {
     if (!up.isDown && redfish.vx === 0) {
       redfish.vy = 0;
+    }
+  };
+
+  space.press = () => {
+    if(!isPaused){
+      state = pause;
+      isPaused = true;
+    }else if(isPaused){
+      state = play;
+      app.ticker.start();
+      isPaused = false;
     }
   };
 
@@ -372,6 +385,9 @@ function play(delta) {
   });
 }
 
+function pause() {
+  app.ticker.stop();
+}
 function restrainMoving(thing, width, height) {
   //check x axis
   if (thing.x > width) {
