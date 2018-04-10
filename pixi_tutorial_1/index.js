@@ -125,8 +125,7 @@ let redfish,
   starfish,
   coral_1,
   coral_2,
-  coral_3,
-  feeders;
+  coral_3;
 
 let state;
 //Get screen height and width
@@ -136,7 +135,6 @@ let width = app.renderer.screen.width;
 let isFlipped = false;
 let isPaused = false;
 
-let f1,f2,f3;
 //- Loading images into the texture cache
 //    A WebGL-ready image is called a texture
 //    Pixi uses a texture cache to store and reference all the textures your sprites will need
@@ -188,17 +186,9 @@ function setup() {
   // Group sprites with containers
   let decorAnimal = new PIXI.Container();
   let corals = new PIXI.Container();
-  feeders = new PIXI.Container();
 
   corals.addChild(coral_1, coral_2, coral_3);
   decorAnimal.addChild(corals, jellyfish, starfish);
-
-  f1 = addFeeder('feeder 1');
-  f2 = addFeeder('feeder 2');
-  f3 = addFeeder('feeder 3');
-
-  console.log(feeders);
-createRect(feeders.width, feeders, height);
 
   //Setting size
   function setOneSize(arr, size) {
@@ -326,7 +316,7 @@ createRect(feeders.width, feeders, height);
   };
 
   // add the sprites to the stage
-  app.stage.addChild(redfish, yellowfish, bluefish, decorAnimal, feeders);
+  app.stage.addChild(redfish, yellowfish, bluefish, decorAnimal);
 
   //Set the game state
   state = play;
@@ -374,15 +364,15 @@ function play(delta) {
   yellowfish.x += 1.5;
   yellowfish.x += 0.3;
   restrainMoving(yellowfish, width, height);
-  
-  if(hitTestRectangle(redfish,f1)){
-    console.log("YESSSS f1");
+
+  if (hitTestRectangle(redfish, bluefish)) {
+    console.log('YESSSS bluefish');
   }
-  if(hitTestRectangle(redfish,f2)){
-    console.log("YESSSS f2");
+  if (hitTestRectangle(redfish, yellowfish)) {
+    console.log('YESSSS yellowfish');
   }
-  if(hitTestRectangle(redfish,f3)){
-    console.log("YESSSS f3");
+  if (hitTestRectangle(redfish, coral_1)) {
+    console.log('YESSSS coral1');
   }
 }
 
@@ -404,18 +394,6 @@ function restrainMoving(thing, width, height) {
   }
 }
 
-function addFeeder(name) {
-  // Create Feeders with PIXI graphics
-  let feeder = new PIXI.Graphics();
-  feeder.beginFill(0xffffff);
-  feeder.drawCircle(randomInt(0, width), 0, 20);
-  feeder.y = height / 2;
-  feeder.name = name;
-  feeders.addChild(feeder);
-  return feeder;
-  // console.log(feeders.children);
-}
-
 function createRect(w, h) {
   let rect = new PIXI.Graphics();
   rect.lineStyle(4, 0xff3300, 1);
@@ -423,4 +401,3 @@ function createRect(w, h) {
   app.stage.addChild(rect);
   return rect;
 }
-
