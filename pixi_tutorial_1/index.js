@@ -136,6 +136,7 @@ let width = app.renderer.screen.width;
 let isFlipped = false;
 let isPaused = false;
 
+let f1,f2,f3;
 //- Loading images into the texture cache
 //    A WebGL-ready image is called a texture
 //    Pixi uses a texture cache to store and reference all the textures your sprites will need
@@ -191,6 +192,13 @@ function setup() {
 
   corals.addChild(coral_1, coral_2, coral_3);
   decorAnimal.addChild(corals, jellyfish, starfish);
+
+  f1 = addFeeder('feeder 1');
+  f2 = addFeeder('feeder 2');
+  f3 = addFeeder('feeder 3');
+
+  console.log(feeders);
+createRect(feeders.width, feeders, height);
 
   //Setting size
   function setOneSize(arr, size) {
@@ -307,10 +315,10 @@ function setup() {
   };
 
   space.press = () => {
-    if(!isPaused){
+    if (!isPaused) {
       state = pause;
       isPaused = true;
-    }else if(isPaused){
+    } else if (isPaused) {
       state = play;
       app.ticker.start();
       isPaused = false;
@@ -345,7 +353,7 @@ function play(delta) {
 
   redfish.x += redfish.vx;
   redfish.y += redfish.vy;
-
+  // console.log('redfish bounds', redfish.getBounds());
   // allow the fish to come back into screen when they move out it visible area
   if (redfish.x > width) {
     redfish.x = 0;
@@ -366,23 +374,16 @@ function play(delta) {
   yellowfish.x += 1.5;
   yellowfish.x += 0.3;
   restrainMoving(yellowfish, width, height);
-
-  feeders.children.forEach(feeder => {
-    feeder.y += 1;
-    if (feeder.y > height && feeder.y > 0) {
-      feeders.removeChild(feeder);
-    }
-  });
-
-  feeders.children.forEach(feeder => {
-    if (hitTestRectangle(redfish, feeder)) {
-      //if there's a collision
-      console.log('AHHHH!');
-      feeders.removeChild(feeder);
-    } else {
-      //if there's no collision
-    }
-  });
+  
+  if(hitTestRectangle(redfish,f1)){
+    console.log("YESSSS f1");
+  }
+  if(hitTestRectangle(redfish,f2)){
+    console.log("YESSSS f2");
+  }
+  if(hitTestRectangle(redfish,f3)){
+    console.log("YESSSS f3");
+  }
 }
 
 function pause() {
@@ -403,19 +404,23 @@ function restrainMoving(thing, width, height) {
   }
 }
 
-function addFeeder() {
+function addFeeder(name) {
   // Create Feeders with PIXI graphics
   let feeder = new PIXI.Graphics();
   feeder.beginFill(0xffffff);
   feeder.drawCircle(randomInt(0, width), 0, 20);
+  feeder.y = height / 2;
+  feeder.name = name;
   feeders.addChild(feeder);
-  console.log(feeders.children.length);
+  return feeder;
+  // console.log(feeders.children);
 }
 
-function feeding() {
-  setInterval(function() {
-    addFeeder();
-  }, 3000);
+function createRect(w, h) {
+  let rect = new PIXI.Graphics();
+  rect.lineStyle(4, 0xff3300, 1);
+  rect.drawRect(0, 0, w, h);
+  app.stage.addChild(rect);
+  return rect;
 }
 
-feeding();
