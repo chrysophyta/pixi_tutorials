@@ -12,10 +12,10 @@ The code of most of this work is based on [this tutorial](https://github.com/kit
 
 ### To Dos
 
-* Valid collision detector
-* Score system
 * Enemies
 * Prettier Background
 * Limited Lives
+* Entry Scene and End Scene
+* Save progress with localStorage
 * More Levels
 * …
