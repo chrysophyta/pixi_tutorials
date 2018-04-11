@@ -15,6 +15,32 @@ function setSize(stuff, w, h) {
   stuff.height = h;
 }
 
+function setOneSize(arr, size) {
+  arr.map(item => {
+    setSize(item, size, size);
+  });
+}
+function setVelocity(obj, vx, vy) {
+  obj.vx = vx;
+  obj.vy = vy;
+}
+
+// allow the fish to come back into screen when they move out it visible area
+function restrainMoving(thing, width, height) {
+  //check x axis
+  if (thing.x > width) {
+    thing.x = 0;
+  } else if (thing.x < 0) {
+    thing.x = width;
+  }
+  //check y axis
+  if (thing.y > height) {
+    thing.y = 0;
+  } else if (thing.y < 0) {
+    thing.y = height;
+  }
+}
+
 // Keyboard Function
 function keyboard(keyCode) {
   let key = {};
@@ -125,10 +151,10 @@ let redfish,
   starfish,
   coral_1,
   coral_2,
-  coral_3,
-  feeders;
+  coral_3;
 
 let state;
+
 //Get screen height and width
 let height = app.renderer.screen.height;
 let width = app.renderer.screen.width;
@@ -193,11 +219,6 @@ function setup() {
   decorAnimal.addChild(corals, jellyfish, starfish);
 
   //Setting size
-  function setOneSize(arr, size) {
-    arr.map(item => {
-      setSize(item, size, size);
-    });
-  }
   setSize(redfish, 25, 25);
   setSize(bluefish, 25, 25);
   setSize(yellowfish, 25, 25);
@@ -211,20 +232,20 @@ function setup() {
   redfish.y = height / 2 - redfish.height / 2;
   redfish.anchor.y = 0.5;
   redfish.anchor.x = 0.5;
-  redfish.vx = 0;
-  redfish.vy = 0;
+
+  setVelocity(redfish, 0, 0);
 
   //given a random y position
 
   let bluefishX = randomInt(0, width);
   bluefish.position.set(bluefishX, 30);
-  bluefish.vx = 0;
-  bluefish.vy = 0;
+
+  setVelocity(bluefish, 0, 0);
 
   let yellowfishX = randomInt(0, width);
   yellowfish.position.set(yellowfishX, 150);
-  yellowfish.vx = 0;
-  yellowfish.vy = 0;
+
+  setVelocity(yellowfish, 0, 0);
 
   //to use global position: parentSprite.toGlobal(childSprite.position)
 
@@ -307,10 +328,10 @@ function setup() {
   };
 
   space.press = () => {
-    if(!isPaused){
+    if (!isPaused) {
       state = pause;
       isPaused = true;
-    }else if(isPaused){
+    } else if (isPaused) {
       state = play;
       app.ticker.start();
       isPaused = false;
@@ -318,7 +339,7 @@ function setup() {
   };
 
   // add the sprites to the stage
-  app.stage.addChild(redfish, yellowfish, bluefish, decorAnimal, feeders);
+  app.stage.addChild(redfish, yellowfish, bluefish, decorAnimal);
 
   //Set the game state
   state = play;
@@ -333,31 +354,9 @@ function gameLoop(delta) {
 }
 
 function play(delta) {
-  //Move the redfish 1 pixel to the right each frame
-  // redfish.vx = 1;
-  // redfish.x += redfish.vx;
-
-  // let disappearTime = 100;
-  // if (redfish.x > width + disappearTime) {
-  //   redfish.x = 0;
-  // }
-  // redfish.x += redfish.vx / 10;
-
   redfish.x += redfish.vx;
   redfish.y += redfish.vy;
-
-  // allow the fish to come back into screen when they move out it visible area
-  if (redfish.x > width) {
-    redfish.x = 0;
-  } else if (redfish.x < 0) {
-    redfish.x = width;
-  }
-
-  if (redfish.y > height) {
-    redfish.y = 0;
-  } else if (redfish.y < 0) {
-    redfish.y = height;
-  }
+  restrainMoving(redfish, width, height);
 
   bluefish.x += 1;
   bluefish.y += 0.1;
@@ -366,56 +365,8 @@ function play(delta) {
   yellowfish.x += 1.5;
   yellowfish.x += 0.3;
   restrainMoving(yellowfish, width, height);
-
-  feeders.children.forEach(feeder => {
-    feeder.y += 1;
-    if (feeder.y > height && feeder.y > 0) {
-      feeders.removeChild(feeder);
-    }
-  });
-
-  feeders.children.forEach(feeder => {
-    if (hitTestRectangle(redfish, feeder)) {
-      //if there's a collision
-      console.log('AHHHH!');
-      feeders.removeChild(feeder);
-    } else {
-      //if there's no collision
-    }
-  });
 }
 
 function pause() {
   app.ticker.stop();
 }
-function restrainMoving(thing, width, height) {
-  //check x axis
-  if (thing.x > width) {
-    thing.x = 0;
-  } else if (thing.x < 0) {
-    thing.x = width;
-  }
-  //check y axis
-  if (thing.y > height) {
-    thing.y = 0;
-  } else if (thing.y < 0) {
-    thing.y = height;
-  }
-}
-
-function addFeeder() {
-  // Create Feeders with PIXI graphics
-  let feeder = new PIXI.Graphics();
-  feeder.beginFill(0xffffff);
-  feeder.drawCircle(randomInt(0, width), 0, 20);
-  feeders.addChild(feeder);
-  console.log(feeders.children.length);
-}
-
-function feeding() {
-  setInterval(function() {
-    addFeeder();
-  }, 3000);
-}
-
-feeding();
