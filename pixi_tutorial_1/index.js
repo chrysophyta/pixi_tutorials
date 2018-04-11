@@ -25,6 +25,15 @@ function setVelocity(obj, vx, vy) {
   obj.vy = vy;
 }
 
+function addFeeder() {
+  let feeder = new PIXI.Sprite.fromImage('img/feeder.png');
+  setSize(feeder, 10, 10);
+  feeder.x = randomInt(0, width);
+  feeder.y = randomInt(-height, 0);
+  feeders.addChild(feeder);
+  return feeder;
+}
+
 // allow the fish to come back into screen when they move out it visible area
 function restrainMoving(thing, width, height) {
   //check x axis
@@ -151,7 +160,8 @@ let redfish,
   starfish,
   coral_1,
   coral_2,
-  coral_3;
+  coral_3,
+  feeders;
 
 let state;
 
@@ -178,7 +188,8 @@ PIXI.loader
     'img/bluefish.png',
     'img/coral.png',
     'img/starfish.png',
-    'img/jellyfish.png'
+    'img/jellyfish.png',
+    'img/feeder.png'
   ])
   // use on("progress",function) to monitor loading progress
   .on('progress', loadProgressHandler)
@@ -214,6 +225,10 @@ function setup() {
   let decorAnimal = new PIXI.Container();
   let corals = new PIXI.Container();
   feeders = new PIXI.Container();
+
+  let f1 = addFeeder();
+  let f2 = addFeeder();
+  let f3 = addFeeder();
 
   corals.addChild(coral_1, coral_2, coral_3);
   decorAnimal.addChild(corals, jellyfish, starfish);
@@ -339,7 +354,7 @@ function setup() {
   };
 
   // add the sprites to the stage
-  app.stage.addChild(redfish, yellowfish, bluefish, decorAnimal);
+  app.stage.addChild(redfish, yellowfish, bluefish, decorAnimal, feeders);
 
   //Set the game state
   state = play;
@@ -365,6 +380,26 @@ function play(delta) {
   yellowfish.x += 1.5;
   yellowfish.x += 0.3;
   restrainMoving(yellowfish, width, height);
+
+  feeders.children.forEach(feeder => {
+    feeder.y += 1;
+    if (feeder.y > height) {
+      feeders.removeChild(feeder);
+    }
+  });
+  console.log(feeders.children.length);
+  if (feeders.children.length < 1) {
+    let nextFeeder_1 = addFeeder();
+    let nextFeeder_2 = addFeeder();
+    let nextFeeder_3 = addFeeder();
+  }
+
+  feeders.children.forEach(feeder => {
+    if (hitTestRectangle(feeder, redfish)) {
+      console.log('Hit');
+      feeders.removeChild(feeder);
+    }
+  });
 }
 
 function pause() {
