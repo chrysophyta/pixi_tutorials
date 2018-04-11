@@ -386,20 +386,19 @@ function play(delta) {
     if (feeder.y > height) {
       feeders.removeChild(feeder);
     }
-  });
-  console.log(feeders.children.length);
-  if (feeders.children.length < 1) {
-    let nextFeeder_1 = addFeeder();
-    let nextFeeder_2 = addFeeder();
-    let nextFeeder_3 = addFeeder();
-  }
-
-  feeders.children.forEach(feeder => {
     if (hitTestRectangle(feeder, redfish)) {
       console.log('Hit');
       feeders.removeChild(feeder);
     }
   });
+
+  console.log(feeders.children.length);
+
+  if (feeders.children.length < 1) {
+    let nextFeeder_1 = addFeeder();
+    let nextFeeder_2 = addFeeder();
+    let nextFeeder_3 = addFeeder();
+  }
 }
 
 function pause() {
