@@ -164,6 +164,8 @@ let redfish,
   feeders;
 
 let state;
+let score = 0;
+let displayScore;
 
 //Get screen height and width
 let height = app.renderer.screen.height;
@@ -232,6 +234,16 @@ function setup() {
 
   corals.addChild(coral_1, coral_2, coral_3);
   decorAnimal.addChild(corals, jellyfish, starfish);
+
+  // Setting Scoring System
+
+  displayScore = new PIXI.Text('Score: 0', {
+    fontFamily: 'Quicksand',
+    fontSize: 12,
+    fill: 0xffffff,
+    align: 'center'
+  });
+  displayScore.position.set(10, 10);
 
   //Setting size
   setSize(redfish, 25, 25);
@@ -354,7 +366,14 @@ function setup() {
   };
 
   // add the sprites to the stage
-  app.stage.addChild(redfish, yellowfish, bluefish, decorAnimal, feeders);
+  app.stage.addChild(
+    redfish,
+    yellowfish,
+    bluefish,
+    decorAnimal,
+    feeders,
+    displayScore
+  );
 
   //Set the game state
   state = play;
@@ -388,11 +407,14 @@ function play(delta) {
     }
     if (hitTestRectangle(feeder, redfish)) {
       console.log('Hit');
+      score += 1;
+      displayScore.text = 'Score: ' + score;
+
       feeders.removeChild(feeder);
     }
   });
 
-  console.log(feeders.children.length);
+  // console.log(feeders.children.length);
 
   if (feeders.children.length < 1) {
     let nextFeeder_1 = addFeeder();
