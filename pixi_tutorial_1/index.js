@@ -413,7 +413,7 @@ function play(delta) {
   restrainMoving(yellowfish, width, height);
 
   whale.x -= 0.3;
-  restrainMoving(whale, width, height);
+  restrainMoving(whale, width + whale.width * 2, height);
 
   feeders.children.forEach(feeder => {
     feeder.y += 1;
