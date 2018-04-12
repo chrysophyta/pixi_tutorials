@@ -191,7 +191,8 @@ PIXI.loader
     'img/coral.png',
     'img/starfish.png',
     'img/jellyfish.png',
-    'img/feeder.png'
+    'img/feeder.png',
+    'img/whale.png'
   ])
   // use on("progress",function) to monitor loading progress
   .on('progress', loadProgressHandler)
@@ -223,6 +224,8 @@ function setup() {
   coral_2 = new PIXI.Sprite(PIXI.loader.resources['img/coral.png'].texture);
   coral_3 = new PIXI.Sprite(PIXI.loader.resources['img/coral.png'].texture);
 
+  whale = new PIXI.Sprite(PIXI.loader.resources['img/whale.png'].texture);
+
   // Group sprites with containers
   let decorAnimal = new PIXI.Container();
   let corals = new PIXI.Container();
@@ -251,6 +254,9 @@ function setup() {
   setSize(yellowfish, 25, 25);
 
   setOneSize([...corals.children, jellyfish, starfish], 25);
+
+  setSize(whale, 250, 250);
+  // whale.scale = 1;
   //Change the sprite's position
   //Center the redfish
   // screen height
@@ -283,6 +289,11 @@ function setup() {
 
   jellyfish.position.set(width / 4, width / 4);
   starfish.position.set(width / 3 * 2, height - starfish.height);
+  whale.anchor.x = 0.5;
+  whale.anchor.y = 0.5;
+  whale.position.set(width / 2, height / 2);
+  whale.filters = [new PIXI.filters.BlurFilter()];
+  whale.alpha = 0.3;
 
   //---------^^^^^^above is basic position setting ^^^^^^---------
   //---------vvvvvv below is keyboard function setting vvvv-------
@@ -367,6 +378,7 @@ function setup() {
 
   // add the sprites to the stage
   app.stage.addChild(
+    whale,
     redfish,
     yellowfish,
     bluefish,
@@ -399,6 +411,9 @@ function play(delta) {
   yellowfish.x += 1.5;
   yellowfish.x += 0.3;
   restrainMoving(yellowfish, width, height);
+
+  whale.x -= 0.3;
+  restrainMoving(whale, width, height);
 
   feeders.children.forEach(feeder => {
     feeder.y += 1;
