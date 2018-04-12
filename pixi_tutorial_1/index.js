@@ -256,7 +256,7 @@ function setup() {
   setOneSize([...corals.children, jellyfish, starfish], 25);
 
   setSize(whale, 250, 250);
-  // whale.scale = 1;
+
   //Change the sprite's position
   //Center the redfish
   // screen height
@@ -291,7 +291,7 @@ function setup() {
   starfish.position.set(width / 3 * 2, height - starfish.height);
   whale.anchor.x = 0.5;
   whale.anchor.y = 0.5;
-  whale.position.set(width / 2, height / 2);
+  whale.position.set(width + whale.width, height / 2);
   whale.filters = [new PIXI.filters.BlurFilter()];
   whale.alpha = 0.3;
 
