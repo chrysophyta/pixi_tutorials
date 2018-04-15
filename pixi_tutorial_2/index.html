@@ -21,6 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0/pixi.min.js "></script>
     <script src="Far.js"></script>
     <script src="Mid.js"></script>
+    <script src="Scroller.js"></script>
     <script>
         function init() {
             stage = new PIXI.Container();
@@ -31,17 +32,12 @@
                 { view: document.getElementById("game-canvas") }
             );
 
-            far = new Far();
-            stage.addChild(far);
-
-            mid = new Mid();
-            stage.addChild(mid);
+            scroller = new Scroller(stage);
 
             requestAnimationFrame(update);
         }
         function update() {
-            far.update();
-            mid.update();
+            scroller.update();
 
             renderer.render(stage);
             requestAnimationFrame(update);
