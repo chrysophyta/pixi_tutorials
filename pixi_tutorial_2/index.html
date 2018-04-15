@@ -20,6 +20,7 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0/pixi.min.js "></script>
     <script src="Far.js"></script>
+    <script src="Mid.js"></script>
     <script>
         function init() {
             stage = new PIXI.Container();
@@ -30,23 +31,17 @@
                 { view: document.getElementById("game-canvas") }
             );
 
-            var farTexture = PIXI.Texture.fromImage("resources/bg-far.png");
             far = new Far();
             stage.addChild(far);
 
-            var midTexture = PIXI.Texture.fromImage("resources/bg-mid.png");
-            mid = new PIXI.extras.TilingSprite(midTexture, 512, 256);
-            mid.position.x = 0;
-            mid.position.y = 128;
-            mid.tilePosition.x = 0;
-            mid.tilePosition.y = 0;
+            mid = new Mid();
             stage.addChild(mid);
 
             requestAnimationFrame(update);
         }
         function update() {
-            far.tilePosition.x -= 0.128;
-            mid.tilePosition.x -= 0.64;
+            far.update();
+            mid.update();
 
             renderer.render(stage);
             requestAnimationFrame(update);
