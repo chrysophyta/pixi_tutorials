@@ -19,6 +19,7 @@
         <canvas id="game-canvas" width="512" height="384"></canvas>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.0.0/pixi.min.js "></script>
+    <script src="Far.js"></script>
     <script>
         function init() {
             stage = new PIXI.Container();
@@ -30,11 +31,7 @@
             );
 
             var farTexture = PIXI.Texture.fromImage("resources/bg-far.png");
-            far = new PIXI.extras.TilingSprite(farTexture, 512, 256);
-            far.position.x = 0;
-            far.position.y = 0;
-            far.tilePosition.x = 0;
-            far.tilePosition.y = 0;
+            far = new Far();
             stage.addChild(far);
 
             var midTexture = PIXI.Texture.fromImage("resources/bg-mid.png");
