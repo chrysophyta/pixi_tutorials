@@ -9,7 +9,6 @@ This interactive aquarium is my first attempt on using Pixi.js.
 
 The code of most of this work is based on [this tutorial](https://github.com/kittykatattack/learningPixi#introduction)
 
-
 ### To Dos
 
 * Enemies
@@ -19,3 +18,10 @@ The code of most of this work is based on [this tutorial](https://github.com/kit
 * Save progress with localStorage
 * More Levels
 * …
+
+## Tutorial 2 (Work In Progress)
+
+The code of most of this work is based on [this tutorial](http://www.yeahbutisitflash.com/?p=5226)
+
+**View Demo Here**:
+[DEMO](https://chrysophyta.github.io/pixi_tutorials/pixi_tutorial_2/)
