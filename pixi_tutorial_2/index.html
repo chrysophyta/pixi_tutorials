@@ -22,27 +22,11 @@
     <script src="Far.js"></script>
     <script src="Mid.js"></script>
     <script src="Scroller.js"></script>
+    <script src="Main.js"></script>
     <script>
         function init() {
-            stage = new PIXI.Container();
-
-            renderer = PIXI.autoDetectRenderer(
-                512,
-                384,
-                { view: document.getElementById("game-canvas") }
-            );
-
-            scroller = new Scroller(stage);
-
-            requestAnimationFrame(update);
+            main = new Main();
         }
-        function update() {
-            scroller.update();
-
-            renderer.render(stage);
-            requestAnimationFrame(update);
-        }
-
 
     </script>
 </body>
