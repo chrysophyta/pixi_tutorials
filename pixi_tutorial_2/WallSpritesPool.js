@@ -1,0 +1,3 @@
+function WallSpritesPool() {
+  this.windows = [];
+}
