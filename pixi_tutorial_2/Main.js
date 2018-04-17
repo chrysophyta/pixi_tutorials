@@ -30,7 +30,11 @@ Main.prototype.spriteSheetLoaded = function() {
 
 Main.prototype.borrowWallSprites = function(num) {
   for (var i = 0; i < num; i++) {
-    var sprite = this.pool.borrowWindow();
+    if (i % 2 == 0) {
+      var sprite = this.pool.borrowWindow();
+    } else {
+      var sprite = this.pool.borrowDecoration();
+    }
     sprite.position.x = -32 + i * 64;
     sprite.position.y = 128;
 
@@ -44,7 +48,11 @@ Main.prototype.returnWallSprites = function() {
   for (var i = 0; i < this.wallSlices.length; i++) {
     var sprite = this.wallSlices[i];
     this.stage.removeChild(sprite);
-    this.pool.returnWindow(sprite);
+    if (i % 2 == 0) {
+      this.pool.returnWindow(sprite);
+    } else {
+      this.pool.returnDecoration(sprite);
+    }
   }
 
   this.wallSlices = [];

@@ -1,6 +1,8 @@
 function WallSpritesPool() {
   this.createWindows();
   this.createDecorations();
+  this.createFrontEdges();
+  this.createBackEdges();
 }
 
 WallSpritesPool.prototype.borrowWindow = function() {
@@ -17,6 +19,21 @@ WallSpritesPool.prototype.borrowDecoration = function() {
 
 WallSpritesPool.prototype.returnDecoration = function(sprite) {
   this.decorations.push(sprite);
+};
+WallSpritesPool.prototype.borrowFrontEdge = function() {
+  return this.frontEdges.shift();
+};
+
+WallSpritesPool.prototype.returnFrontEdge = function(sprite) {
+  this.frontEdges.push(sprite);
+};
+
+WallSpritesPool.prototype.borrowBackEdge = function() {
+  return this.backEdges.shift();
+};
+
+WallSpritesPool.prototype.returnBackEdge = function(sprite) {
+  this.backEdges.push(sprite);
 };
 
 WallSpritesPool.prototype.createWindows = function() {
@@ -37,6 +54,23 @@ WallSpritesPool.prototype.createDecorations = function() {
 
   this.shuffle(this.decorations);
 };
+WallSpritesPool.prototype.createFrontEdges = function() {
+  this.frontEdges = [];
+
+  this.addFrontEdgeSprites(2, 'edge_01');
+  this.addFrontEdgeSprites(2, 'edge_02');
+
+  this.shuffle(this.frontEdges);
+};
+
+WallSpritesPool.prototype.createBackEdges = function() {
+  this.backEdges = [];
+
+  this.addBackEdgeSprites(2, 'edge_01');
+  this.addBackEdgeSprites(2, 'edge_02');
+
+  this.shuffle(this.backEdges);
+};
 
 WallSpritesPool.prototype.addWindowSprites = function(amount, frameId) {
   for (var i = 0; i < amount; i++) {
@@ -51,7 +85,21 @@ WallSpritesPool.prototype.addDecorationSprites = function(amount, frameId) {
     this.decorations.push(sprite);
   }
 };
+WallSpritesPool.prototype.addFrontEdgeSprites = function(amount, frameId) {
+  for (var i = 0; i < amount; i++) {
+    var sprite = new PIXI.Sprite(PIXI.Texture.fromFrame(frameId));
+    this.frontEdges.push(sprite);
+  }
+};
 
+WallSpritesPool.prototype.addBackEdgeSprites = function(amount, frameId) {
+  for (var i = 0; i < amount; i++) {
+    var sprite = new PIXI.Sprite(PIXI.Texture.fromFrame(frameId));
+    sprite.anchor.x = 1;
+    sprite.scale.x = -1;
+    this.backEdges.push(sprite);
+  }
+};
 WallSpritesPool.prototype.shuffle = function(array) {
   var len = array.length;
   var shuffles = len * 3;
