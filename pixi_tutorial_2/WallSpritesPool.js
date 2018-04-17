@@ -1,6 +1,15 @@
 function WallSpritesPool() {
   this.createWindows();
 }
+
+WallSpritesPool.prototype.borrowWindow = function() {
+  return this.windows.shift();
+};
+
+WallSpritesPool.prototype.returnWindow = function(sprite) {
+  this.windows.push(sprite);
+};
+
 WallSpritesPool.prototype.createWindows = function() {
   this.windows = [];
 
