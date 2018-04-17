@@ -24,4 +24,28 @@ Main.prototype.loadSpriteSheet = function() {
 Main.prototype.spriteSheetLoaded = function() {
   this.scroller = new Scroller(this.stage);
   requestAnimationFrame(this.update.bind(this));
+  this.pool = new WallSpritesPool();
+  this.wallSlices = [];
+};
+
+Main.prototype.borrowWallSprites = function(num) {
+  for (var i = 0; i < num; i++) {
+    var sprite = this.pool.borrowWindow();
+    sprite.position.x = -32 + i * 64;
+    sprite.position.y = 128;
+
+    this.wallSlices.push(sprite);
+
+    this.stage.addChild(sprite);
+  }
+};
+
+Main.prototype.returnWallSprites = function() {
+  for (var i = 0; i < this.wallSlices.length; i++) {
+    var sprite = this.wallSlices[i];
+    this.stage.removeChild(sprite);
+    this.pool.returnWindow(sprite);
+  }
+
+  this.wallSlices = [];
 };
