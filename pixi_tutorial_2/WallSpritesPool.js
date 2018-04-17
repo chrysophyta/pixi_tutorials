@@ -1,5 +1,6 @@
 function WallSpritesPool() {
   this.createWindows();
+  this.createDecorations();
 }
 
 WallSpritesPool.prototype.borrowWindow = function() {
@@ -8,6 +9,14 @@ WallSpritesPool.prototype.borrowWindow = function() {
 
 WallSpritesPool.prototype.returnWindow = function(sprite) {
   this.windows.push(sprite);
+};
+
+WallSpritesPool.prototype.borrowDecoration = function() {
+  return this.decorations.shift();
+};
+
+WallSpritesPool.prototype.returnDecoration = function(sprite) {
+  this.decorations.push(sprite);
 };
 
 WallSpritesPool.prototype.createWindows = function() {
@@ -19,10 +28,27 @@ WallSpritesPool.prototype.createWindows = function() {
   this.shuffle(this.windows);
 };
 
+WallSpritesPool.prototype.createDecorations = function() {
+  this.decorations = [];
+
+  this.addDecorationSprites(6, 'decoration_01');
+  this.addDecorationSprites(6, 'decoration_02');
+  this.addDecorationSprites(6, 'decoration_03');
+
+  this.shuffle(this.decorations);
+};
+
 WallSpritesPool.prototype.addWindowSprites = function(amount, frameId) {
   for (var i = 0; i < amount; i++) {
     var sprite = PIXI.Sprite.fromFrame(frameId);
     this.windows.push(sprite);
+  }
+};
+
+WallSpritesPool.prototype.addDecorationSprites = function(amount, frameId) {
+  for (var i = 0; i < amount; i++) {
+    var sprite = new PIXI.Sprite(PIXI.Texture.fromFrame(frameId));
+    this.decorations.push(sprite);
   }
 };
 
