@@ -34,3 +34,8 @@ Walls.prototype.borrowWallSprite = function(sliceType) {
 Walls.prototype.returnWallSprite = function(sliceType, sliceSprite) {
   return this.returnWallSpriteLookup[sliceType].call(this.pool, sliceSprite);
 };
+
+Walls.prototype.addSlice = function(sliceType, y) {
+  var slice = new WallSlice(sliceType, y);
+  this.slices.push(slice);
+};
