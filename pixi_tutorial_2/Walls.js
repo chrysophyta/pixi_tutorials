@@ -24,3 +24,11 @@ Walls.prototype.createLookupTables = function() {
   ] = this.pool.returnDecoration;
   this.returnWallSpriteLookup[SliceType.WINDOW] = this.pool.returnWindow;
 };
+
+Walls.prototype.borrowWallSprite = function(sliceType) {
+  return this.borrowWallSpriteLookup[sliceType].call(this.pool);
+};
+
+Walls.prototype.returnWallSprite = function(sliceType, sliceSprite) {
+  return this.returnWallSpriteLookup[sliceType].call(this.pool, sliceSprite);
+};
