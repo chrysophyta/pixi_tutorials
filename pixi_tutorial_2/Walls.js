@@ -18,6 +18,8 @@ Walls.VIEWPORT_NUM_SLICES =
 
 Walls.prototype.setViewportX = function(viewportX) {
   this.viewportX = this.checkViewportXBounds(viewportX);
+  var prevViewportSliceX = this.viewportSliceX;
+  this.viewportSliceX = Math.floor(this.viewportX / WallSlice.WIDTH);
 };
 Walls.prototype.checkViewportXBounds = function(viewportX) {
   var maxViewportX =
