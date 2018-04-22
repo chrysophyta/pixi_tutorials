@@ -5,9 +5,17 @@ function Walls() {
 
   this.slices = [];
   this.createTestMap();
+
+  this.viewportX = 0;
+  this.viewportSliceX = 0;
 }
 
 Walls.prototype = Object.create(PIXI.Container.prototype);
+
+Walls.VIEWPORT_WIDTH = 512;
+Walls.VIEWPORT_NUM_SLICES =
+  Math.ceil(Walls.VIEWPORT_WIDTH / WallSlice.WIDTH) + 1;
+
 Walls.prototype.createLookupTables = function() {
   this.borrowWallSpriteLookup = [];
   this.borrowWallSpriteLookup[SliceType.FRONT] = this.pool.borrowFrontEdge;
