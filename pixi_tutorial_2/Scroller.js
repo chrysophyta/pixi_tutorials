@@ -15,6 +15,7 @@ Scroller.prototype.setViewportX = function(viewportX) {
   this.viewportX = viewportX;
   this.far.setViewportX(viewportX);
   this.mid.setViewportX(viewportX);
+  this.front.setViewportX(viewportX);
 };
 
 Scroller.prototype.getViewportX = function() {
